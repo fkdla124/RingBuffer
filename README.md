@@ -1,5 +1,5 @@
 # 🔄 RingBuffer
-* 🛠️ 게임 서버 개발에 사용할 RingBuffer 자료구조 직접 구현
+*  게임 서버 개발에 사용할 RingBuffer 자료구조 직접 구현
 
 # 🎲 Random Test
 * 랜덤길이 랜덤문자열 push(), 랜덤길이 pop() 반복테스트.
