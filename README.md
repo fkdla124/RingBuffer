@@ -3,6 +3,8 @@
 
 # 🎲 Random Test
 * 랜덤길이 랜덤문자열 push(), 랜덤길이 pop() 반복테스트.
-* STL queue와 직접만든 RingBuffer에 동시에 같은 데이터를 push(), pop() 하여 검증 <br>
-  ![image](./RingBuffer.png)
+* STL queue와 직접만든 RingBuffer에 동시에 같은 데이터를 push(), pop() 하여 검증 <br><br>
+
+# 5시간 랜덤테스트 결과
+![image](./RingBuffer.png)
 
