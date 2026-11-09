@@ -2,6 +2,8 @@
 
 #include <memory.h>
 
+#define min(a, b) ((a) < (b) ? (a) : (b))
+
 class RingBuffer
 {
 private:
@@ -189,7 +191,8 @@ public:
 		int freeSpace = _capacity - _size;
 
 		int i;
-		for (i = 0; i < min(freeSpace, len); i++)
+		int count = min(freeSpace, len);
+		for (i = 0; i < count; i++)
 		{
 			buffer[rear] = *data++;
 			rear = (rear + 1) % _capacity;
@@ -207,7 +210,8 @@ public:
 			return 0;
 
 		int i;
-		for (i = 0; i < min(len, _size); i++)
+		int count = min(len, _size);
+		for (i = 0; i < count; i++)
 		{
 			*dest++ = buffer[front];
 			front = (front + 1) % _capacity;
@@ -226,7 +230,8 @@ public:
 			return 0;
 
 		int i;
-		for (i = 0; i < min(len, _size); i++)
+		int count = min(len, _size);
+		for (i = 0; i < count; i++)
 			*dest++ = buffer[(front + i) % _capacity];
 
 		return i;
