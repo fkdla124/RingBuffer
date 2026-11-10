@@ -8,6 +8,7 @@ class RingBuffer
 {
 private:
 	char* buffer;
+	int maxCapacity;
 	int _capacity;
 	int _size;
 
@@ -101,14 +102,14 @@ public:
 	RingBuffer(RingBuffer&& src) = delete;
 	RingBuffer& operator=(const RingBuffer& src) = delete;
 
-	RingBuffer() : _capacity(1024), _size(0)
+	RingBuffer() : _capacity(1024), maxCapacity(_capacity * 2), _size(0)
 	{
 		buffer = new char[_capacity];
 		front = 0;
 		rear = 0;
 	}
 
-	RingBuffer(int capacity) : _capacity(capacity), _size(0)
+	RingBuffer(int capacity) : _capacity(capacity), maxCapacity(_capacity * 2), _size(0)
 	{
 		if (capacity <= 0)
 			_capacity = 1024;
@@ -158,7 +159,7 @@ public:
 	// 원래 사이즈의 2배까지 가능. 줄이는 것은 불가능.
 	bool resize(int capacity)
 	{
-		if (capacity <= 0 || capacity < _capacity || capacity > _capacity * 2)
+		if (capacity <= 0 || capacity < _capacity || capacity > maxCapacity)
 			return false;
 
 		if (capacity == _capacity)
@@ -185,10 +186,27 @@ public:
 		// data nullptr 체크는 안함.
 		// 그자리에서 뻗게 만들어야 디버깅 할 수 있을 것으로 판단.
 
-		if (full())
+		if (full() && _capacity == maxCapacity)
 			return 0;
-
+		
+		// 공간이 부족할시
 		int freeSpace = _capacity - _size;
+		if (freeSpace < len)
+		{
+			// 더 필요한 사이즈
+			int needSize = len - freeSpace;
+
+			// 새로 할당할 사이즈
+			int newSize = _capacity + (needSize + 63) % 64;
+
+			// 기존보다 두배 초과하면 두배로 제한
+			if (newSize > maxCapacity)
+				newSize = maxCapacity;
+
+			resize(newSize);
+		}
+
+		freeSpace = _capacity - _size;
 
 		int i;
 		int count = min(freeSpace, len);
