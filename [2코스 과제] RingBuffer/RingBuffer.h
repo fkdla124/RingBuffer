@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include <memory.h>
-
-#define min(a, b) ((a) < (b) ? (a) : (b))
+// #define min(a, b) ((a) < (b) ? (a) : (b))
 
 class RingBuffer
 {
@@ -16,6 +14,11 @@ private:
 	int rear;
 
 private:
+	char* GetBuffer() const
+	{
+		return buffer;
+	}
+
 	// front ptr
 	char* GetFront() const
 	{
@@ -255,59 +258,59 @@ public:
 		return i;
 	}
 
-	// 디버깅 print
-	void print()
-	{
-		printf("\n");
-		printf("=================================================================================================== RingBuffer ==========================================================================================\n");
-		printf("Capacity: %02d | Size: %02d | Free: %02d\n\n",
-			_capacity, _size, _capacity - _size);
+	//// 디버깅 print
+	//void print()
+	//{
+	//	printf("\n");
+	//	printf("=================================================================================================== RingBuffer ==========================================================================================\n");
+	//	printf("Capacity: %02d | Size: %02d | Free: %02d\n\n",
+	//		_capacity, _size, _capacity - _size);
 
-		// Index
-		printf("Index  : ");
-		for (int i = 0; i < _capacity; i++)
-			printf("%02d ", i);
-		printf("\n");
+	//	// Index
+	//	printf("Index  : ");
+	//	for (int i = 0; i < _capacity; i++)
+	//		printf("%02d ", i);
+	//	printf("\n");
 
-		// Front / Rear 위치
-		printf("Pointer: ");
-		for (int i = 0; i < _capacity; i++)
-		{
-			if (i == front && i == rear)
-				printf("FR ");
-			else if (i == front)
-				printf(" F ");
-			else if (i == rear)
-				printf(" R ");
-			else
-				printf("   ");
-		}
-		printf("\n");
+	//	// Front / Rear 위치
+	//	printf("Pointer: ");
+	//	for (int i = 0; i < _capacity; i++)
+	//	{
+	//		if (i == front && i == rear)
+	//			printf("FR ");
+	//		else if (i == front)
+	//			printf(" F ");
+	//		else if (i == rear)
+	//			printf(" R ");
+	//		else
+	//			printf("   ");
+	//	}
+	//	printf("\n");
 
-		// 데이터
-		printf("Data   : ");
-		for (int i = 0; i < _capacity; i++)
-		{
-			// 현재 데이터가 존재하는 영역인지 확인
-			int distance = (i - front + _capacity) % _capacity;
+	//	// 데이터
+	//	printf("Data   : ");
+	//	for (int i = 0; i < _capacity; i++)
+	//	{
+	//		// 현재 데이터가 존재하는 영역인지 확인
+	//		int distance = (i - front + _capacity) % _capacity;
 
-			if (distance < _size)
-			{
-				char c = buffer[i];
+	//		if (distance < _size)
+	//		{
+	//			char c = buffer[i];
 
-				// 출력하기 어려운 문자 처리
-				if (c >= 32 && c <= 126)
-					printf(" %c ", c);
-				else
-					printf("%02X ", (unsigned char)c);
-			}
-			else
-			{
-				printf(" . ");
-			}
-		}
-		printf("\n\n");
+	//			// 출력하기 어려운 문자 처리
+	//			if (c >= 32 && c <= 126)
+	//				printf(" %c ", c);
+	//			else
+	//				printf("%02X ", (unsigned char)c);
+	//		}
+	//		else
+	//		{
+	//			printf(" . ");
+	//		}
+	//	}
+	//	printf("\n\n");
 
-		printf("=========================================================================================================================================================================================================\n");
-	}
+	//	printf("=========================================================================================================================================================================================================\n");
+	//}
 };
