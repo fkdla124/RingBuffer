@@ -6,14 +6,14 @@ class RingBuffer
 {
 private:
 	char* buffer;
-	int maxCapacity;
-	int _capacity;
-	int _size;
+	size_t _capacity;
+	size_t _size;
+	size_t maxCapacity;
 
 	int front;
 	int rear;
 
-private:
+public:
 	char* GetBuffer() const
 	{
 		return buffer;
@@ -130,17 +130,17 @@ public:
 		return _capacity == _size;
 	}
 
-	int size() const
+	size_t size() const
 	{
 		return _size;
 	}
 
-	int capacity() const
+	size_t capacity() const
 	{
 		return _capacity;
 	}
 
-	int space() const
+	size_t space() const
 	{
 		return _capacity - _size;
 	}
@@ -153,9 +153,9 @@ public:
 	}
 
 	// 원래 사이즈의 2배까지 가능. 줄이는 것은 불가능.
-	bool resize(int capacity)
+	bool resize(size_t capacity)
 	{
-		if (capacity <= 0 || capacity < _capacity || capacity > maxCapacity)
+		if (capacity == 0 || capacity < _capacity || capacity > maxCapacity)
 			return false;
 
 		if (capacity == _capacity)
@@ -173,18 +173,18 @@ public:
 
 		delete[] buffer;
 		buffer = newBuffer;
-		
+
 		return true;
 	}
 
-	int push(const char* data, int len)
+	int push(const char* data, size_t len)
 	{
 		// data nullptr 체크는 안함.
 		// 그자리에서 뻗게 만들어야 디버깅 할 수 있을 것으로 판단.
 
 		if (full() && _capacity == maxCapacity)
 			return 0;
-		
+
 		// 공간이 부족할시
 		int freeSpace = _capacity - _size;
 		if (freeSpace < len)
@@ -215,7 +215,7 @@ public:
 		return i;
 	}
 
-	int pop(char* dest, int len)
+	int pop(char* dest, size_t len)
 	{
 		// dest nullptr 체크는 안함.
 		// 그자리에서 뻗게 만들어야 디버깅 할 수 있을 것으로 판단.
@@ -235,7 +235,7 @@ public:
 	}
 
 	// front에서 dest로 _size바이트 복사.
-	int peek(char* dest, int len) const
+	int peek(char* dest, size_t len) const
 	{
 		// dest nullptr 체크는 안함.
 		// 그자리에서 뻗게 만들어야 디버깅 할 수 있을 것으로 판단.
