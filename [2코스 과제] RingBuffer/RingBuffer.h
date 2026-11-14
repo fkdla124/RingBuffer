@@ -32,7 +32,7 @@ private:
 	}
 
 	// 데이터를 빼는 것과 동일.
-	int MoveFront(int len)
+	int MoveFront(size_t len)
 	{
 		if (len >= _size)
 		{
@@ -51,7 +51,7 @@ private:
 	}
 
 	// 데이터를 넣는 것과 동일.
-	int MoveRear(int len)
+	int MoveRear(size_t len)
 	{
 		int freeSpace = _capacity - _size;
 		if (len >= freeSpace)
@@ -105,21 +105,14 @@ public:
 	RingBuffer(RingBuffer&& src) = delete;
 	RingBuffer& operator=(const RingBuffer& src) = delete;
 
-	RingBuffer() : _capacity(1024), maxCapacity(_capacity * 2), _size(0)
+	RingBuffer() : _capacity(1024), maxCapacity(1024 * 2), _size(0), front(0), rear(0)
 	{
 		buffer = new char[_capacity];
-		front = 0;
-		rear = 0;
 	}
 
-	RingBuffer(int capacity) : _capacity(capacity), maxCapacity(_capacity * 2), _size(0)
+	RingBuffer(int capacity) : _capacity(capacity > 0 ? capacity : 1024), maxCapacity(_capacity * 2), _size(0), front(0), rear(0)
 	{
-		if (capacity <= 0)
-			_capacity = 1024;
-
 		buffer = new char[_capacity];
-		front = 0;
-		rear = 0;
 	}
 
 	~RingBuffer()
@@ -200,7 +193,7 @@ public:
 			int needSize = len - freeSpace;
 
 			// 새로 할당할 사이즈
-			int newSize = _capacity + (needSize + 63) % 64;
+			int newSize = _capacity + ((needSize + 63) / 64) * 64;
 
 			// 기존보다 두배 초과하면 두배로 제한
 			if (newSize > maxCapacity)
