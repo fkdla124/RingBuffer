@@ -163,9 +163,14 @@ public:
 
 		char* newBuffer = new char[capacity];
 
+		#pragma warning(disable: 6386)
 		int i = 0;
 		for (; i < _size; i++)
+		{
+			// IntelliSesnse 해석 오류. newBuffer 오버런
 			newBuffer[i] = buffer[(front + i) % _capacity];
+		}
+		#pragma warning(default: 6386)
 
 		_capacity = capacity;
 		front = 0;
