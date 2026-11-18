@@ -1,6 +1,8 @@
 ﻿#pragma once
 
-// #define min(a, b) ((a) < (b) ? (a) : (b))
+#ifndef min
+	#define min(a, b) (((a) < (b)) ? (a) : (b))
+#endif
 
 class RingBuffer
 {
