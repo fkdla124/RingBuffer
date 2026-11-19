@@ -157,11 +157,17 @@ public:
 	// 원래 사이즈의 2배까지 가능. 줄이는 것은 불가능.
 	bool resize(size_t capacity)
 	{
-		if (capacity == 0 || capacity < _capacity || capacity > maxCapacity)
+		// 줄이는 것은 불가능
+		if (capacity == 0 || capacity < _capacity)
 			return false;
-
+		
+		// 같은 사이즈로 resize는 그냥 리턴
 		if (capacity == _capacity)
 			return true;
+
+		// 기존보다 두배 초과하면 두배까지로 제한
+		if (capacity > maxCapacity)
+			capacity = maxCapacity;
 
 		char* newBuffer = new char[capacity];
 
@@ -201,10 +207,6 @@ public:
 
 			// 새로 할당할 사이즈
 			int newSize = _capacity + ((needSize + 1023) / 1024) * 1024;
-
-			// 기존보다 두배 초과하면 두배로 제한
-			if (newSize > maxCapacity)
-				newSize = maxCapacity;
 
 			resize(newSize);
 		}
