@@ -200,7 +200,7 @@ public:
 			int needSize = len - freeSpace;
 
 			// 새로 할당할 사이즈
-			int newSize = _capacity + ((needSize + 63) / 64) * 64;
+			int newSize = _capacity + ((needSize + 1023) / 1024) * 1024;
 
 			// 기존보다 두배 초과하면 두배로 제한
 			if (newSize > maxCapacity)
